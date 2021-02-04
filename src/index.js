@@ -12,12 +12,20 @@ import BootstrapProvider from '@bootstrap-styled/provider';
 import './styles/index.css';
 
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+//import reportWebVitals from './reportWebVitals';
 
 const myTheme = {
     //'$btn-primary-bg': 'blue',
     //'$btn-primary-color': 'white',
 };
+
+// Redux Store Log
+window.store = store;
+
+// NB: Get store state :
+//store.getState()
+
+const rootElement = document.getElementById('root');
 
 ReactDOM.render(
     <Provider store={store}>
@@ -29,10 +37,12 @@ ReactDOM.render(
             </BootstrapProvider>
         </PersistGate>
     </Provider>,
-    document.getElementById('root')
+    rootElement
 );
+
+//console.log('ENV', process.env);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+//reportWebVitals();
