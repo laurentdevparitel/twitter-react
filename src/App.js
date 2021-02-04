@@ -1,3 +1,4 @@
+import React from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 
 import './styles/App.css';
@@ -11,7 +12,9 @@ import NoMatchView from './views/NoMatchView';
 
 function App() {
     return (
+
         <Router>
+
             <div className="App">
 
                 <Switch>
@@ -27,10 +30,11 @@ function App() {
                             <NoMatchView/>
                         </ErrorBoundary>
                     </Route>
-                    
+
                 </Switch>
 
             </div>
+
         </Router>
     );
 }

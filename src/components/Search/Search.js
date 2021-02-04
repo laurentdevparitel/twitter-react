@@ -1,21 +1,21 @@
 
+import React from "react";
+import {
+    Container,
+    Row,
+    Col
+} from '@bootstrap-styled/v4';
+
+import SearchBar  from "./SearchBar";
+
 const Search = () => {
 
     return (
-        <header className="App-header">
-
-            <p>
-                Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <a
-                className="App-link"
-                href="https://reactjs.org"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Learn React
-            </a>
-        </header>
+        <Row>
+            <Col lg="12">
+                <SearchBar />
+            </Col>
+        </Row>
     )
 }
 

@@ -1,11 +1,18 @@
-import React     from 'react';
-import Search  from "../components/Search/Search";
+import React from 'react';
+
+import {
+    Container
+} from "@bootstrap-styled/v4";
+
+import Search from "../components/Search/Search";
 
 const HomeView = () => {
     return (
-        <div className="view-container home">
-            <Search />
-        </div>
+        <Container fluid>
+            <div className="view-container home">
+                <Search/>
+            </div>
+        </Container>
     );
 };
 
