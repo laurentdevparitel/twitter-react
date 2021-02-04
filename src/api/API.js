@@ -125,6 +125,9 @@ export default class API {
         /*.catch( error => {
             console.error(`[${this.constructor.name}.getTweetsSearch] [error]`, API.handleAPIErrorMessages(error));
         });*/
+            .finally(error => {
+                console.error(`[${this.constructor.name}.getTweetsSearch] [error]`, API.handleAPIErrorMessages(error));
+            });
 
         return response;
     }

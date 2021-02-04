@@ -2,7 +2,7 @@ import {
 
     SET_TWEETS,
     SET_FILTERED_TWEETS,
-    SET_KEYWORD_SEARCH,
+    SET_SEARCH_QUERY,
     SET_APP_MESSAGE,
     SET_IS_XHR_RUNNING,
 
@@ -13,7 +13,7 @@ const initialState = {
 
     tweets: [],  // fetched tweets from API
     filteredTweets: [],  // filtered tweets from search input
-    keywordSearch: null,    // search by keyword(s)
+    searchQuery: null,    // search by keyword(s)
     appMessage: {   // app success / error messages (cf: MuiAlert)
         text: null,   // message
         severity: "success"    // success|warning|info|error
@@ -38,8 +38,8 @@ const rootReducer = (state = initialState, action) => {
         case SET_FILTERED_TWEETS:
             return { ...state, filteredTweets: action.payload };
 
-        case SET_KEYWORD_SEARCH:
-            return { ...state, keywordSearch: action.payload };
+        case SET_SEARCH_QUERY:
+            return { ...state, searchQuery: action.payload };
 
         case SET_APP_MESSAGE:
             return { ...state, appMessage: action.payload };

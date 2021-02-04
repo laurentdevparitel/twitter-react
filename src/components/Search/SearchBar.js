@@ -14,7 +14,7 @@ import {
 
 const COMPONENT_NAME = "SearchBar";
 
-const SearchBar = () => {
+const SearchBar = (props) => {
 
     const dispatch = useDispatch();
 
@@ -23,29 +23,35 @@ const SearchBar = () => {
      * @param {Event} e
      * @returns void
      */
-    const handleKeywordSearchChange = (e) => {
-        //console.info(`[${COMPONENT_NAME}.handleKeywordSearchChange] e`, e);
+    const handleSearchQueryChange = (e) => {
+        //console.info(`[${COMPONENT_NAME}.handleSearchQueryChange] e`, e);
 
         // Redux storage
-        dispatch({type: "SET_KEYWORD_SEARCH", payload: e.target.value});
+        dispatch({type: "SET_SEARCH_QUERY", payload: e.target.value});
         //dispatch({type: "SET_FILTERED_TWEETS", payload: filteredTweets});
     }
 
     /**
      * Submit search
+     * @param {Event} e
      * @returns void
      */
-    const handleSubmit = () => {
-        console.info(`[${COMPONENT_NAME}.handleSubmit]`);
+    const handleFormSubmit = (e) => {
+        console.info(`[${COMPONENT_NAME}.handleFormSubmit]`, e);
+
+        e.preventDefault();
+
+        // Passing data to parent component
+        props.onFormSubmit();
     }
 
     return (
-        <Form>
+        <Form onSubmit={handleFormSubmit}>
             <FormGroup>
-                <Label htmlFor="search"><b>Recherche Twitter</b></Label>
+                <Label htmlFor="search-query"><b>Recherche Twitter</b></Label>
                 <InputGroup>
-                    <Input type="text" placeholder="#React" id="search" onChange={handleKeywordSearchChange} />
-                    <InputGroupButton onClick={handleSubmit}>
+                    <Input type="text" placeholder="#React" id="search-query" onChange={handleSearchQueryChange} />
+                    <InputGroupButton onClick={handleFormSubmit}>
                         Rechercher
                     </InputGroupButton>
                 </InputGroup>
