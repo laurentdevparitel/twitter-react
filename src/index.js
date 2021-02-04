@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// -- Redux
+import {Provider} from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import {store, persistor} from './redux/store/store'
+
+// -- Bootstrap
 import BootstrapProvider from '@bootstrap-styled/provider';
 
 import './styles/index.css';
@@ -14,11 +20,15 @@ const myTheme = {
 };
 
 ReactDOM.render(
-    <BootstrapProvider theme={myTheme}>
-        {/*<React.StrictMode>*/}
-            <App/>
-        {/*</React.StrictMode>*/}
-    </BootstrapProvider>,
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <BootstrapProvider theme={myTheme}>
+                {/*<React.StrictMode>*/}
+                <App/>
+                {/*</React.StrictMode>*/}
+            </BootstrapProvider>
+        </PersistGate>
+    </Provider>,
     document.getElementById('root')
 );
 
