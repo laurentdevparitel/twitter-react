@@ -17,6 +17,7 @@ export default class API {
         //     this.APP_BASE_URL = env.ENV.APP_BASE_URL;
         // }
         this.BASE_URL = process.env.REACT_APP_API_BASE_URL;
+        this.ACESS_TOKEN = process.env.REACT_APP_API_ACESS_TOKEN;
     }
 
     /**
@@ -100,6 +101,17 @@ export default class API {
         return errorMessage;
     }
 
+    /**
+     * Get Authorization headers
+     * @returns Object
+     */
+    getAuthHeaders = () => {
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${this.ACESS_TOKEN}`
+        }
+    }
+
 
     //-------------------------------------------------------------------------
     //                            Twitter search
@@ -117,7 +129,9 @@ export default class API {
 
         const APIRoute = `${this.BASE_URL}/tweets/search/recent?query=${searchQuery}&max_results=${maxResults}`;
 
-        const response = axios.get(APIRoute)
+        const response = axios.get(APIRoute, {
+            headers: this.getAuthHeaders()
+        })
             .then(json => {
                 console.log(`[${this.constructor.name}.getTweetsSearch] json`, json);
                 return json.data;
