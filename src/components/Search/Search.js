@@ -32,7 +32,7 @@ const Search = () => {
      * Fetch data from API
      * @returns void
      */
-    const fetchData = () => {
+    const fetchData = async () => {
         console.info(`[${COMPONENT_NAME}.fetchData]`);
 
         if (!searchQuery) return;
@@ -41,7 +41,7 @@ const Search = () => {
         dispatch({type: "SET_IS_XHR_RUNNING", payload: loading});
 
         try {
-            const data = api.getTweetsSearch(searchQuery);
+            const data = await api.getTwitterSearch(searchQuery);
             console.info(`[${COMPONENT_NAME}.fetchData] >>>> data loaded: `, data);
 
             if (typeof data !== "undefined") {

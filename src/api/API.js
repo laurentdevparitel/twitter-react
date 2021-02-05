@@ -2,6 +2,8 @@
 // -- axios
 import axios from 'axios';
 
+import MOCK_API from './MOCK_API';
+
 /**
  * API
  * @returns void
@@ -18,6 +20,8 @@ export default class API {
         // }
         this.BASE_URL = process.env.REACT_APP_API_BASE_URL;
         this.ACESS_TOKEN = process.env.REACT_APP_API_ACESS_TOKEN;
+
+        this.USE_MOCK_DATA = true;
     }
 
     /**
@@ -115,7 +119,7 @@ export default class API {
 
     //-------------------------------------------------------------------------
     //                            Twitter search
-    //-------------------------------------------------------------------------
+    //----------------------------d---------------------------------------------
 
     /**
      * Get recent tweets related to a search query
@@ -124,23 +128,31 @@ export default class API {
      * @param {Number} maxResults
      * @returns Promise
      */
-    getTweetsSearch = async (searchQuery, maxResults= 20) => {
-        console.info(`[${this.constructor.name}.getTweetsSearch]`, searchQuery, maxResults);
+    getTwitterSearch = async (searchQuery, maxResults= 20) => {
+        console.info(`[${this.constructor.name}.getTwitterSearch]`, searchQuery, maxResults);
 
         const APIRoute = `${this.BASE_URL}/tweets/search/recent?query=${searchQuery}&max_results=${maxResults}`;
+
+        if (this.USE_MOCK_DATA){
+            const json = MOCK_API.getTwitterSearch;
+
+            return Promise.resolve(json).then(json => {
+                return json.data;
+            });
+        }
 
         const response = axios.get(APIRoute, {
             headers: this.getAuthHeaders()
         })
             .then(json => {
-                console.log(`[${this.constructor.name}.getTweetsSearch] json`, json);
+                console.log(`[${this.constructor.name}.getTwitterSearch] json`, json);
                 return json.data;
             })
         /*.catch( error => {
-            console.error(`[${this.constructor.name}.getTweetsSearch] [error]`, API.handleAPIErrorMessages(error));
+            console.error(`[${this.constructor.name}.getTwitterSearchgetTwitterSearch] [error]`, API.handleAPIErrorMessages(error));
         });*/
             .finally(error => {
-                console.error(`[${this.constructor.name}.getTweetsSearch] [error]`, API.handleAPIErrorMessages(error));
+                console.error(`[${this.constructor.name}.getTwitterSearch] [error]`, API.handleAPIErrorMessages(error));
             });
 
         return response;
