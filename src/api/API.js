@@ -122,19 +122,59 @@ export default class API {
     //----------------------------d---------------------------------------------
 
     /**
+     * Returns authorized tweet fields
+     * @returns Array
+     */
+    getTweetFields = () => {
+        return [
+            "attachments",
+            "author_id",
+            "created_at",
+            "entities",
+            "geo",
+            "id",
+            "in_reply_to_user_id",
+            "lang",
+            "possibly_sensitive",
+            "referenced_tweets",
+            "source",
+            "text",
+            "withheld"
+        ];
+    }
+
+    /**
      * Get recent tweets related to a search query
      ex : https://api.twitter.com/2/tweets/search/recent?query=react&max_results=20
      * @param {String} searchQuery
      * @param {Number} maxResults
+     * @param {Array} selectedFields
      * @returns Promise
      */
-    getTwitterSearch = async (searchQuery, maxResults= 20) => {
+    getTwitterSearch = async (searchQuery, maxResults= 20, selectedFields = []) => {
         console.info(`[${this.constructor.name}.getTwitterSearch]`, searchQuery, maxResults);
 
-        const APIRoute = `${this.BASE_URL}/tweets/search/recent?query=${searchQuery}&max_results=${maxResults}`;
+        let APIRoute = `${this.BASE_URL}/tweets/search/recent?query=${searchQuery}&max_results=${maxResults}`;
+        let fields = [];
+
+        if (selectedFields.length){
+
+            selectedFields.forEach((selectedField, index) => {
+              if (this.getTweetFields().includes(selectedField)){
+                  fields.push(selectedField);
+              }
+            })
+        }
+        else {
+            fields = this.getTweetFields(); // default
+        }
+
+        APIRoute += `&tweet.fields=` + fields.join(",");
+        console.info(`[${this.constructor.name}.getTwitterSearch] APIRoute`, APIRoute);
 
         if (this.USE_MOCK_DATA){
-            const json = MOCK_API.getTwitterSearch;
+            const json = MOCK_API.getTwitterSearchWithFullTweet;
+            //const json = MOCK_API.getTwitterSearch;
 
             return Promise.resolve(json).then(json => {
                 return json.data;
@@ -159,3 +199,5 @@ export default class API {
     }
 
 }
+
+getTwitterSearchWithFullTweet
