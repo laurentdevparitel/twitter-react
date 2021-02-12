@@ -4,9 +4,8 @@ import {
     Card,
     CardBlock,
     CardTitle,
-    CardSubtitle,
     CardText, CardLink,
-    Img, Col, Row,
+    Img, Col, Row, P,
     Strong, Badge
 } from '@bootstrap-styled/v4';
 
@@ -20,12 +19,6 @@ export default function TweetCard(props) {
 
     const { data } = props;
     //console.info(`[${COMPONENT_NAME}] data:`, data);
-
-    const getSanitizedHtml = (html) => {
-        /*return dangerouslySetInnerHTML={
-            _html: html
-        }*/
-    }
 
     const renderFormatedUrls = (entities) => {
         //console.info(`[${COMPONENT_NAME}.renderFormatedUrls]`, entities);
@@ -75,13 +68,15 @@ export default function TweetCard(props) {
                 <Col lg="11">
                     <Card>
                         <CardBlock>
-                            <CardTitle><Strong className="source">{data.source}</Strong> {renderFormatedUserames(data.entities)} <Badge className="timeInterval">{getTimeInterval(data.created_at)}</Badge></CardTitle>
+                            <CardTitle className="text-truncate"><Strong className="source">{data.source}</Strong> {renderFormatedUserames(data.entities)} <Badge className="timeInterval">{getTimeInterval(data.created_at)}</Badge></CardTitle>
                             {/*<CardSubtitle>Card subtitle</CardSubtitle>*/}
                             <CardText>{data.text}</CardText>
-
-                            { renderFormatedUrls(data.entities) }
-
-                            { renderFormatedHashTags(data.entities) }
+                            <P>
+                                { renderFormatedUrls(data.entities) }
+                            </P>
+                            <P>
+                                { renderFormatedHashTags(data.entities) }
+                            </P>
                         </CardBlock>
                     </Card>
                 </Col>

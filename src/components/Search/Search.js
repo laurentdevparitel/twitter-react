@@ -39,7 +39,7 @@ const Search = () => {
      * @returns void
      */
     const fetchData = async () => {
-        console.info(`[${COMPONENT_NAME}.fetchData]`);
+        //console.info(`[${COMPONENT_NAME}.fetchData]`);
 
         if (!searchQuery) return;
 
@@ -80,14 +80,14 @@ const Search = () => {
     console.info(`[${COMPONENT_NAME}] searchQuery`, searchQuery);
     console.info(`[${COMPONENT_NAME}] filteredTweets`, filteredTweets);
 
-    const noFilteredTweetsFound = () => {
+    const renderNoFilteredTweetsFound = () => {
 
-        if (!searchQuery || searchQuery === ''){
+        if (!searchQuery || searchQuery === '' || loading){
             return;
         }
         return (
-            <P>
-                `Oups ... No reference was found with the keyword search <b>{searchQuery}</b> ...`
+            <P className="text-center mt-3">
+                `Oups ... No tweet found with the keyword search <b>{searchQuery}</b> ...`
             </P>
         )
     }
@@ -101,19 +101,18 @@ const Search = () => {
                     loading && <Loader />
                 }
 
+                {
+                    !filteredTweets.length && renderNoFilteredTweetsFound()
+                }
+
                 <Ul>
-                    {(
-                        filteredTweets.length ?
-
-                            filteredTweets.map((tweet, index) => (
-                                <Li key={tweet.id} >
-                                    <TweetCard data={tweet} />
-                                </Li>
-                            )) :
-
-
-                            noFilteredTweetsFound()
-                    )}
+                    {
+                        filteredTweets.map((tweet, index) => (
+                            <Li key={tweet.id} >
+                                <TweetCard data={tweet} />
+                            </Li>
+                        ))
+                    }
                 </Ul>
             </Col>
         </Row>

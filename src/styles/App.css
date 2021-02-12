@@ -7,8 +7,14 @@
   padding:50px;
 }
 
-ul {}
+ul {padding:0px;}
 ul li {list-style: none;}
+
+.text-truncate{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /** Loader **/
 .spinner-border {

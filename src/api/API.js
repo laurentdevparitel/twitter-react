@@ -21,7 +21,7 @@ export default class API {
         this.BASE_URL = process.env.REACT_APP_API_BASE_URL;
         this.ACESS_TOKEN = process.env.REACT_APP_API_ACESS_TOKEN;
 
-        this.USE_MOCK_DATA = true;
+        this.USE_MOCK_DATA = false;
     }
 
     /**
