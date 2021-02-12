@@ -3,7 +3,9 @@ import React from "react";
 import {
     Row,
     Col,
-    P
+    P,
+    Ul,
+    Li
 } from '@bootstrap-styled/v4';
 
 // -- Redux
@@ -45,7 +47,8 @@ const Search = () => {
         dispatch({type: "SET_IS_XHR_RUNNING", payload: loading});
 
         try {
-            const data = await api.getTwitterSearch(searchQuery);
+            const data = await api.getTwitterSearch(searchQuery, 20, ["source"]);
+            //const data = await api.getTwitterSearch(searchQuery, 20, ["source"]);
             console.info(`[${COMPONENT_NAME}.fetchData] >>>> data loaded: `, data);
 
             if (typeof data !== "undefined") {
@@ -98,16 +101,20 @@ const Search = () => {
                     loading && <Loader />
                 }
 
-                {(
-                    filteredTweets.length ?
+                <Ul>
+                    {(
+                        filteredTweets.length ?
 
-                        filteredTweets.map((tweet, index) => (
+                            filteredTweets.map((tweet, index) => (
+                                <Li key={tweet.id} >
+                                    <TweetCard data={tweet} />
+                                </Li>
+                            )) :
 
-                            <TweetCard key={tweet.id} data={tweet} />
-                        )) :
 
-                        noFilteredTweetsFound()
-                )}
+                            noFilteredTweetsFound()
+                    )}
+                </Ul>
             </Col>
         </Row>
     )

@@ -2,12 +2,17 @@ import React from 'react';
 
 import {
     Card,
-    CardImg,
     CardBlock,
     CardTitle,
     CardSubtitle,
-    CardText,
+    CardText, CardLink,
+    Img, Col, Row,
+    Strong, Badge
 } from '@bootstrap-styled/v4';
+
+import defaultAvatar from '../../images/avatar.png'
+
+import {getTimeInterval} from '../../helpers/helpers';
 
 const COMPONENT_NAME = "TweetCard";
 
@@ -16,18 +21,73 @@ export default function TweetCard(props) {
     const { data } = props;
     //console.info(`[${COMPONENT_NAME}] data:`, data);
 
+    const getSanitizedHtml = (html) => {
+        /*return dangerouslySetInnerHTML={
+            _html: html
+        }*/
+    }
+
+    const renderFormatedUrls = (entities) => {
+        //console.info(`[${COMPONENT_NAME}.renderFormatedUrls]`, entities);
+
+        if (!entities || typeof entities.urls === "undefined"){
+            return;
+        }
+        return entities.urls.map((url, index) => {
+            let link = `${url.url}`;
+            return <CardLink key={index} href={link}>{url.url}</CardLink>
+        })
+    }
+
+    const renderFormatedHashTags = (entities) => {
+        //console.info(`[${COMPONENT_NAME}.renderFormatedHashTags]`, entities);
+
+        if (!entities || typeof entities.hashtags === "undefined"){
+            return;
+        }
+        return entities.hashtags.map((hashtag, index) => {
+            let link = `#${hashtag.tag}`;
+            return <CardLink key={index} href={link}>#{hashtag.tag}</CardLink>
+        })
+    }
+
+    const renderFormatedUserames = (entities) => {
+        //console.info(`[${COMPONENT_NAME}.renderFormatedUserames]`, entities);
+
+        if (!entities || typeof entities.mentions === "undefined"){
+            return;
+        }
+        return entities.mentions.map((mention, index) => {
+            return <Strong key={index}  className="twitterId">@{mention.username}</Strong>
+        })
+    }
+
     if (!data) {
         return;
     }
 
     return (
-        <Card width="100%" className='tweetCard'>
-            <CardImg top src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
-            <CardBlock>
-                <CardTitle>Card title</CardTitle>
-                <CardSubtitle>Card subtitle</CardSubtitle>
-                <CardText>{data.text}</CardText>
-            </CardBlock>
-        </Card>
+        <div className='tweetCard'>
+            <Row>
+                <Col lg="1" className="text-right">
+                    <Img thumbnail alt="Card image cap" src={defaultAvatar} className="rounded avatar" />
+                </Col>
+                <Col lg="11">
+                    <Card>
+                        <CardBlock>
+                            <CardTitle><Strong className="source">{data.source}</Strong> {renderFormatedUserames(data.entities)} <Badge className="timeInterval">{getTimeInterval(data.created_at)}</Badge></CardTitle>
+                            {/*<CardSubtitle>Card subtitle</CardSubtitle>*/}
+                            <CardText>{data.text}</CardText>
+
+                            { renderFormatedUrls(data.entities) }
+
+                            { renderFormatedHashTags(data.entities) }
+                        </CardBlock>
+                    </Card>
+                </Col>
+            </Row>
+
+        </div>
+
     );
 }

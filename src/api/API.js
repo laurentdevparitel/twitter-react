@@ -123,6 +123,7 @@ export default class API {
 
     /**
      * Returns authorized tweet fields
+     * cf: https://developer.twitter.com/en/docs/twitter-api/fields
      * @returns Array
      */
     getTweetFields = () => {
@@ -144,32 +145,75 @@ export default class API {
     }
 
     /**
+     * Returns authorized tweet user fields
+     * cf: https://developer.twitter.com/en/docs/twitter-api/data-dictionary/object-model/user
+     * @returns Array
+     */
+    getTweetUserFields = () => {
+        return [
+            "id",
+            "name",
+            "username",
+            "created_at",
+            "description",
+            "entities",
+            "location",
+            "pinned_tweet_id",
+            "profile_image_url",
+            "protected",
+            "public_metrics",
+            "url",
+            "verified",
+            "withheld"
+        ];
+    }
+
+    /**
      * Get recent tweets related to a search query
      ex : https://api.twitter.com/2/tweets/search/recent?query=react&max_results=20
      * @param {String} searchQuery
      * @param {Number} maxResults
-     * @param {Array} selectedFields
+     * @param {Array} selectedTweetFields
+     * @param {Array} selectedTweetUserFields
      * @returns Promise
      */
-    getTwitterSearch = async (searchQuery, maxResults= 20, selectedFields = []) => {
+    getTwitterSearch = async (searchQuery, maxResults= 20, selectedTweetFields = [], selectedTweetUserFields = []) => {
         console.info(`[${this.constructor.name}.getTwitterSearch]`, searchQuery, maxResults);
 
         let APIRoute = `${this.BASE_URL}/tweets/search/recent?query=${searchQuery}&max_results=${maxResults}`;
-        let fields = [];
+        let fields = {
+            'tweet.fields': [],
+            'user.fields': [],
+        };
 
-        if (selectedFields.length){
+        if (selectedTweetFields.length){
 
-            selectedFields.forEach((selectedField, index) => {
-              if (this.getTweetFields().includes(selectedField)){
-                  fields.push(selectedField);
+            selectedTweetFields.forEach((selectedTweetField, index) => {
+              if (this.getTweetFields().includes(selectedTweetField)){
+                  fields['tweet.fields'].push(selectedTweetField);
               }
             })
         }
         else {
-            fields = this.getTweetFields(); // default
+            fields['tweet.fields'] = this.getTweetFields(); // default
         }
 
-        APIRoute += `&tweet.fields=` + fields.join(",");
+        if (selectedTweetUserFields.length){
+
+            selectedTweetUserFields.forEach((selectedTweetUserField, index) => {
+                if (this.getTweetFields().includes(selectedTweetUserField)){
+                    fields['user.fields'].push(selectedTweetUserField);
+                }
+            })
+        }
+        else {
+            fields['user.fields'] = this.getTweetUserFields(); // default
+        }
+
+        for (let key in fields){
+            APIRoute += `&${key}=` + fields[key].join(",");
+        }
+        APIRoute += `&expansions=author_id`;    // NB: user join
         console.info(`[${this.constructor.name}.getTwitterSearch] APIRoute`, APIRoute);
 
         if (this.USE_MOCK_DATA){
@@ -199,5 +243,3 @@ export default class API {
     }
 
 }
-
-getTwitterSearchWithFullTweet
