@@ -5,6 +5,7 @@ import {
     SET_SEARCH_QUERY,
     SET_APP_MESSAGE,
     SET_IS_XHR_RUNNING,
+    SET_IS_NEW_SEARCH,
 
 } from "../constants/action-types.js";
 
@@ -19,6 +20,7 @@ const initialState = {
         severity: "success"    // success|warning|info|error
     },
     isXHRRunning: false,    // is XHR request running ?
+    isNewSearch: true,  // new search with new searchQuery
 };
 
 /*
@@ -46,6 +48,9 @@ const rootReducer = (state = initialState, action) => {
 
         case SET_IS_XHR_RUNNING:
             return { ...state, isXHRRunning: action.payload };
+
+        case SET_IS_NEW_SEARCH:
+            return { ...state, isNewSearch: action.payload };
 
         default:
             return state;

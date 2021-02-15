@@ -27,9 +27,10 @@ const Search = () => {
     const [loading, setLoading] = React.useState(false);
 
     // Redux
-    const {searchQuery, filteredTweets} = useSelector(state => ({
+    const {searchQuery, filteredTweets, isNewSearch} = useSelector(state => ({
         searchQuery: state.searchQuery,
         filteredTweets: state.filteredTweets,
+        isNewSearch: state.isNewSearch,
     }));
 
     const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const Search = () => {
         dispatch({type: "SET_IS_XHR_RUNNING", payload: loading});
 
         try {
-            const data = await api.getTwitterSearch(searchQuery, 20, ["source"]);
+            const data = await api.getTwitterSearch(searchQuery, 20, ["source"], ["username"]);
             //const data = await api.getTwitterSearch(searchQuery, 20, ["source"]);
             console.info(`[${COMPONENT_NAME}.fetchData] >>>> data loaded: `, data);
 
@@ -59,12 +60,15 @@ const Search = () => {
                 // hide loader
                 setLoading(false);
                 dispatch({type: "SET_IS_XHR_RUNNING", payload: loading});
+
+                dispatch({type: "SET_IS_NEW_SEARCH", payload: false});
             }
         }
         catch(error){
             console.error(`[${COMPONENT_NAME}.fetchData] error`, error);
             setLoading(true);
             dispatch({type: "SET_IS_XHR_RUNNING", payload: loading});
+            dispatch({type: "SET_IS_NEW_SEARCH", payload: false});
 
             dispatch({
                 type: "SET_APP_MESSAGE",
@@ -85,11 +89,13 @@ const Search = () => {
         if (!searchQuery || searchQuery === '' || loading){
             return;
         }
-        return (
-            <P className="text-center mt-3">
-                `Oups ... No tweet found with the keyword search <b>{searchQuery}</b> ...`
-            </P>
-        )
+        if (!isNewSearch && !filteredTweets.length){
+            return (
+                <P className="text-center mt-3">
+                    `Oups ... No tweet found with the keyword search <b>{searchQuery}</b> ...`
+                </P>
+            )
+        }
     }
 
     return (
@@ -101,9 +107,7 @@ const Search = () => {
                     loading && <Loader />
                 }
 
-                {
-                    !filteredTweets.length && renderNoFilteredTweetsFound()
-                }
+                { renderNoFilteredTweetsFound() }
 
                 <Ul>
                     {

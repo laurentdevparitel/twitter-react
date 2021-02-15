@@ -21,7 +21,7 @@ export default class API {
         this.BASE_URL = process.env.REACT_APP_API_BASE_URL;
         this.ACESS_TOKEN = process.env.REACT_APP_API_ACESS_TOKEN;
 
-        this.USE_MOCK_DATA = false;
+        this.USE_MOCK_DATA = true;
     }
 
     /**
@@ -112,7 +112,14 @@ export default class API {
     getAuthHeaders = () => {
         return {
             'Content-Type': 'application/json',
-            'Authorization': `Basic ${this.ACESS_TOKEN}`
+            'Authorization': `Basic ${this.ACESS_TOKEN}`,
+
+            'User-Agent': 'PostmanRuntime/7.26.8',
+            'Accept': '*/*',
+            'Cache-Control': 'no-cache',
+            'Postman-Token': '6db39a99-f3eb-465f-8d26-221a5cd0932b',
+            'Host': 'api.twitter.com',
+            'Cookie': 'personalization_id="v1_ui3yMYNMBJ3iSaxHaEO1MQ=="; guest_id=v1%3A161219049036681255'
         }
     }
 

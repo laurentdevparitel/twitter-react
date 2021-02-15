@@ -1310,8 +1310,12 @@ const getTwitterSearchWithFullTweet = {
     }
 }
 
+/*const getTwitterSearchWithFullTweet = {
 
-const MOCK_API = {
+    "data": []
+}*/
+
+    const MOCK_API = {
     getTwitterSearch,
     getTwitterSearchWithFullTweet
 }

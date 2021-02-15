@@ -28,6 +28,7 @@ const SearchBar = (props) => {
 
         // Redux storage
         dispatch({type: "SET_SEARCH_QUERY", payload: e.target.value});
+        dispatch({type: "SET_IS_NEW_SEARCH", payload: true});
         //dispatch({type: "SET_FILTERED_TWEETS", payload: filteredTweets});
     }
 
