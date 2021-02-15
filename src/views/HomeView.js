@@ -8,7 +8,7 @@ import Search from "../components/Search/Search";
 
 const HomeView = () => {
     return (
-        <Container fluid>
+        <Container>
             <div className="view-container home">
                 <Search/>
             </div>
