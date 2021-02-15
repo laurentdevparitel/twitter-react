@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Row,
     Col,
@@ -25,6 +25,7 @@ const COMPONENT_NAME = "Search";
 const Search = () => {
 
     const [loading, setLoading] = React.useState(false);
+    const SEARCH_REFRESH_INTERVAL = 20;  // seconds
 
     // Redux
     const {searchQuery, filteredTweets, isNewSearch} = useSelector(state => ({
@@ -35,12 +36,20 @@ const Search = () => {
 
     const dispatch = useDispatch();
 
+    // Refresh search results every n seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchData();
+        }, SEARCH_REFRESH_INTERVAL * 1000);
+        return () => clearInterval(interval);
+    }, []);
+
     /**
      * Fetch data from API
      * @returns void
      */
     const fetchData = async () => {
-        //console.info(`[${COMPONENT_NAME}.fetchData]`);
+        console.info(`[${COMPONENT_NAME}.fetchData]`);
 
         if (!searchQuery) return;
 

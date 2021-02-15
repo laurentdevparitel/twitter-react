@@ -38,7 +38,7 @@ const SearchBar = (props) => {
      * @returns void
      */
     const handleFormSubmit = (e) => {
-        console.info(`[${COMPONENT_NAME}.handleFormSubmit]`, e);
+        //console.info(`[${COMPONENT_NAME}.handleFormSubmit]`, e);
 
         e.preventDefault();
 
